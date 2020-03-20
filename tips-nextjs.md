@@ -68,9 +68,109 @@ có những URL nào trên website của bạn để các BOT call thông tin v�
 Và khi bạn đã sử dụng Nextjs thì chắc hẳn bạn quan tâm đến SEO. Và câu hỏi là làm thế nào để có thể tạo Sitemap cho ứng dụng
 Nextjs. Thật may là trên Internet cũng đã có nhiều bài viết để bạn có thể tham khảo và tạo Sitemap tự động cho ứng dụng của mình
 
-Ngoài ra, đã có 1 dev phát triển tiện ích giúp cho việc genrate sitemap ứng dụng của bạn. Nó sẽ đọc theo cấu trúc Routing ở pages
-để tạo ra cấu trúc với các URL ứng dụng của bạn đang có.
+Ngoài ra, đã có 1 dev phát triển tiện ích giúp cho việc genrate sitemap ứng dụng của bạn. Nó sẽ đọc theo cấu trúc Routing ở pages để tạo ra cấu trúc với các URL ứng dụng của bạn đang có.
 https://github.com/IlusionDev/nextjs-sitemap-generator
 
+Sau đó, hãy chủ động gửi sitemap của bạn đến các công cụ tìm kiếm thông qua các dường dẫn sao.
+
+- Với Google
+
+http://www.google.com/ping?sitemap=<complete_url_of_sitemap>
+Ex: http://www.google.com/webmasters/sitemaps/ping?sitemap=http://www.example.com/sitemap-file.xml
+
+- Với yahoo:
+http://search.yahooapis.com/SiteExplorerService/V1/updateNotification?appid=YahooDemo&url=http://www.domain.com/sitemap.xml
+
+- Với Ping
+http://www.bing.com/webmaster/ping.aspx?siteMap=[your sitemap web address]
+
+# 4. Thêm các thẻ metadata đầy đủ chủ website của bạn
+Các thể metadata ( meta tag, openGraph) sẽ giúp các công cụ tìm kiếm (crawlers) hiểu và index các nội dung trên các trang của bạn một cách chính xác nhất.
+Mặc dù, Nextjs đã tự đông thêm 1 số thẻ meta data cơ bản. Bao gồm cả the viewport và content type.
+Tuy nhiên, bạn cần cài đặt 1 số thẻ meta quan trọng cần có khác như meta desciption tag hay title tag thông qua việc chèn vào header tương ứng của các pages.
+
+Và để có thể cấu hình 1 cách đầy đủ và chính xác, dễ dàng nhất cho từng URL và trang web. Mình khuyên các bạn sử dụng 
+https://github.com/garmeeh/next-seo
+
+Sau đó, các bạn chèn đoạn mã này vào file _app.js. 
+```sh
+import App, { Container } from 'next/app';
+import React from 'react';
+import { DefaultSeo } from 'next-seo';
+
+export default class MyApp extends App {
+  render() {
+    const { Component, pageProps } = this.props;
+    return (
+      <Container>
+        <DefaultSeo
+          title="WSM"
+          description="WSM - the timesheet management application ia now ready to appear on mobile phones to help employees manage their check-in, check-out times, time-offs as well as OT times"
+          canonical="https://wsm.vn"
+          openGraph={{
+            type: 'website',
+            locale: 'vi',
+            url: 'https://wsm.vn',
+            site_name: 'WSM',
+          }}
+          twitter={{
+            handle: '@handle',
+            site: '@site',
+            cardType: 'summary_large_image',
+          }}
+        />
+        <Component {...pageProps} />
+      </Container>
+    );
+  }
+}
+```
+
+Nó sẽ giúp trang web của bạn mặc định có các thẻ metatag này xuất hiện ở mọi URL trong web của bạn.
+Nếu muốn 1 trang cụ thể nào đó có các thẻ meta tag khác với các meta tag mặc định ở trền thì bạn chỉ cần ghi đè phần cấu hình riêng cho từng trang đó thông qua thẻ <NextSeo>
+
+```sh
+import React from 'react';
+import { NextSeo } from 'next-seo';
+
+export default () => (
+  <>
+    <NextSeo
+      title="Manage requests"
+      description="Manage requests for leader"
+      canonical="https://wsm.vn/requests"
+      openGraph={{
+        url: 'https://wsm.vn/requests',
+        title: 'Manage requests',
+        description: 'Manage requests for leader',
+        images: [
+          {
+            url: 'https://www.example.ie/og-image-01.jpg',
+            width: 800,
+            height: 600,
+            alt: 'Og Image Alt',
+          },
+          {
+            url: 'https://www.example.ie/og-image-02.jpg',
+            width: 900,
+            height: 800,
+            alt: 'Og Image Alt Second',
+          },
+          { url: 'https://www.example.ie/og-image-03.jpg' },
+          { url: 'https://www.example.ie/og-image-04.jpg' },
+        ],
+        site_name: 'SiteName',
+      }}
+      twitter={{
+        handle: '@handle',
+        site: '@site',
+        cardType: 'summary_large_image',
+      }}
+    />
+    <p>Manage request</p>
+  </>
+);
+```
 
 The end!
+
