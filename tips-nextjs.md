@@ -76,6 +76,7 @@ Sau đó, hãy chủ động gửi sitemap của bạn đến các công cụ t�
 - Với Google
 
 http://www.google.com/ping?sitemap=<complete_url_of_sitemap>
+
 Ex: http://www.google.com/webmasters/sitemaps/ping?sitemap=http://www.example.com/sitemap-file.xml
 
 - Với yahoo:
@@ -83,6 +84,8 @@ http://search.yahooapis.com/SiteExplorerService/V1/updateNotification?appid=Yaho
 
 - Với Ping
 http://www.bing.com/webmaster/ping.aspx?siteMap=[your sitemap web address]
+
+![S](https://seomax.net/wp-content/uploads/2019/07/submit-sitemap-google.png)
 
 # 4. Thêm các thẻ metadata đầy đủ chủ website của bạn
 Các thể metadata ( meta tag, openGraph) sẽ giúp các công cụ tìm kiếm (crawlers) hiểu và index các nội dung trên các trang của bạn một cách chính xác nhất.
@@ -171,6 +174,6 @@ export default () => (
   </>
 );
 ```
-
+![S](https://snipcart.com/media/204688/next-js-seo-results.png)
 The end!
 
