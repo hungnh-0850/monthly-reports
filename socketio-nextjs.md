@@ -135,6 +135,8 @@ nextApp.prepare().then(() => {
   })
 })
 ```
+## Bước 3: Viết code để gửi và nhận dữ liệu realtime thông báo khi có comment mới
+
 Khi mỗi user giờ đã có 1 room riêng của nó cho việc giao tiếp (emit - phát ra và on - lắng nghe). Tiếp theo mình sẽ xử lý để cho nó bắn data về khi có thông báo mới.
 Ở ví dụ này, mình muốn khi có bình luận mới thì sẽ gửi thông báo notification đến người được reply. Do đó, mình sẽ viết code ở phần liên quan đến comment.
 
@@ -196,6 +198,19 @@ Sau đó set lại số unreadnotifcation và content tương ứng
 ```
 
 HhandleNotification mình sẽ viết để cập nhật lại state cho việc hiển thị notifcation ở trên.
+
+
+```sh
+const handleNotification = (notifications) => {
+    setNotifications({
+      notification: notifications.value.notifications.data,
+      hasMore: notifications.value.has_more,
+      requesting: false,
+      unread: notifications.value.count_unread_notifications,
+      errors: false,
+    })
+```
+
 Trong socket.io , sử dụng .emit có nhiều option để bắn dữ liệu đến một đối tượng.Ở trên mình cần bắn đến 1 đối tượng duy nhất. cụ thể nên mình cần tạo cái room tương ứng cho chúng. 
 Có rất nhiều lệnh với .emit mà các bạn có thể tham khảo
 
