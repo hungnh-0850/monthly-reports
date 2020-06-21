@@ -17,8 +17,8 @@ $ knex migrate:make create_users_table
 $ knex migrate:make create_tasks_table
 ```
 
-2 dòng lệnh trên sẽ tự động tạo ra các file migration scripts trong thư mục ./db/migrations với tên chưa timestamp. (Ví dụ:
-20201024191043_create_user.js). Mục đích là để Knex phân biệt được file Migration nào là cũ, file nào là mới hơn và thực hiện chúng theo thứ tự.
+2 dòng lệnh trên sẽ tự động tạo ra các file migration scripts trong thư mục **./db/migrations** với tên chưa timestamp. (Ví dụ:
+**20201024191043_create_user.js**). Mục đích là để Knex phân biệt được file Migration nào là cũ, file nào là mới hơn và thực hiện chúng theo thứ tự.
 
 
 **20201024191043_create_user.js**
@@ -92,3 +92,75 @@ $ knex migrate:latest
 ```
 Bạn có thể vào DB để kiểm tra, chắc chắn một cột mới có tên fullname đã được thêm vào bảng **Users**
 
+## Seeding Database
+
+Tương tự như Migration, mô-đun knex cũng cho phép chúng ta tạo các tập lệnh để chèn dữ liệu ban đầu vào các bảng được gọi là Seed file !
+Lưu ý rằng nếu chúng ta có quan hệ giữa các bảng, việc seeding cũng phải theo một thứ tự cụ thể.
+
+Ví dụ: chúng ta phải chọn bảng Users để seed trước vì bảng Tasks của chúng ta phải xác thực khóa ngoại là id người dùng đã tồn tại.
+
+```
+$ knex seed:make 01_users
+$ knex seed:make 02_tasks
+```
+
+**01_users.js**
+
+```
+exports.seed = function(knex, Promise) {
+  // Xoá ALL records có trong db
+  return knex('users').del()
+  .then(function () {
+    // Thêm mới người dùng
+    return knex('users').insert([
+      {
+        id: 1,
+        email: 'hung@email.com',
+        password: '123456'
+      },
+      {
+        id: 2,
+        email: 'tham@email.com',
+        password: 'password1'
+      },
+      {
+        id: 3
+        email: 'chien@email.com',
+        password: 'password123'
+      }
+    ]);
+  });
+};
+```
+
+**02_tasks.js**
+
+```
+exports.seed = function(knex, Promise) {
+  // 
+  return knex('tasks').del()
+  .then(function () {
+    // 
+    return knex('tasks').insert([
+      {
+        title: 'Design DB',
+        description: 'Design DB',
+        is_complete: false,
+        user_id: 2
+      },
+      {
+        title: 'Push new code',
+        description: 'Push',
+        is_complete: false,
+        user_id: 1,
+      }
+    ]);
+  });
+};
+```
+
+Cuối cùng, chạy dòng lệnh sau.
+
+```$ knex seed:run```
+
+Vậy là ở bài viết này, mình đã hoàn tất hướng dẫn các bạn làm việc với Knex command line để Migartions và Seeding. Hi vọng các bạn có thể áp dụng hiệu quả vào dự án.
