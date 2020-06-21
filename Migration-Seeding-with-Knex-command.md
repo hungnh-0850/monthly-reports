@@ -61,3 +61,34 @@ exports.down = function(knex, Promise) {
 Bây giờ, bạn có thể chạy lệnh dưới đây để thực hiện cập nhật cơ sở dữ liệu cục bộ của mình theo các file Migrations mới nhất đã được thêm vào ở trên.
 
 ``` $ knex migrate:latest ```
+
+## Thêm mới hoặc xoá columns của bảng đã tồn tại
+
+Giả sử bạn muốn thêm một column mới là fullname đến bảng Users đã tồn tại ở trên,
+
+Tương tự như việc tạo bảng, chúng ta có thể thực hiện việc này bằng cách tạo một tệp migration script khác sẽ được dành riêng để thêm hoặc xóa một cột khỏi bảng mong muốn.
+
+Tạo file mirgation script đó thông qua knex.js bằng dòng lệnh
+
+```$ knex migrate:make add_fullname_to_users```
+
+Bên trong file migration script mới được tạo, bạn có thể chỉnh sửa các hàm export.up và export.down để được như sau
+
+```
+exports.up = function(knex, Promise) {
+  knex.schema.table('users', function(table) {
+    table.integer('fullname').notNull()
+  })
+}
+exports.down = function(knex, Promise) {
+  knex.schema.table('users', function(table) {
+    table.dropColumn('fullname')
+  })
+}
+```
+Bây giờ chúng ta có thể chạy lệnh sau để cập nhật bảng hiện có.
+```
+$ knex migrate:latest
+```
+Bạn có thể vào DB để kiểm tra, chắc chắn một cột mới có tên fullname đã được thêm vào bảng **Users**
+
