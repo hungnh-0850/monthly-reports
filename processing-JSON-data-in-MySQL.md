@@ -124,7 +124,7 @@ Thông thường ở frontend chúng ta sẽ phải trả về một giá trị 
 
 Bên backend chúng ta phải xử lý logic ở đây, chúng có thể dễ dàng kiểm tra xem id người dùng yêu cầu có nằm trong mảng bookmarks đó không. (in_array). Nếu có thì đưa ra một dấu hiệu của JSON "is_bookmark", nếu không thì trả về 0 cho giá trị JSON "is_bookmark".
 
-## Vấn đề khi xử lý xoá dữ liệu kiểu JSON
+## Xử lý xoá dữ liệu kiểu JSON
 
 Chúng ta không thể nào xử lý kiểu JSON với các câu truy vấn SQL trực tiếp. 
 Giải pháp phù hợp là sẽ xử lý JSON và Array trong mỗi ngôn ngữ được sử dụng trước khi đưa vào truy vấn SQL.
@@ -135,3 +135,14 @@ Ví dụ: Tôi có giá trị cột bookmark loại JSON trong bảng bài viế
 Cột này chứa dánh sách ids người dùng đã đánh dấu bài viết. Vì vậy, nếu người dùng có id = 1 muốn xóa dấu trang, chúng ta có thể tìm kiếm nó bằng một thư viện mảng như Lodash JS hoặc Collection Laravel có thể tìm kiếm id = 1. Nếu nó được tìm thấy tại chỉ mục 0, chúng ta có thể thực hiện hàm **JSON_REMOVE** với truy vấn sau:
 
 ```UPDATE article set bookmark = JSON_REMOVE (bookmark, '$ [?]') Where id = 2 ```
+
+## Xử lý thêm dữ liệu vào kiểu JSON
+
+Nếu chúng ta muốn thêm 1 ID, chỉ cần sử dụng hàm JSON_MERGE.
+```UPDATE article SET bookmark = JSON_MERGE (bookmark,?) WHERE id = 2```
+
+Ví dụ tôi muốn thêm ID =1 vào. Sau câu truy vấn trên sẽ được kết quả là:
+[4, 5, 6, 7, 9, 1]
+
+
+Vậy là bài viết đến đây đã kết thúc. Hy vọng nó hữu ích với bạn trong nhiều trường hợp sau này!
