@@ -109,6 +109,9 @@ UNLOCK TABLES;
 - Dump completed on 2020-07-19 21:10:59
 ```
 
+>  Lưu ý: Khi làm việc với JSON, nó khá nhạy cảm như con gái, điều đó có nghĩa là gì? JSON không thể có dữ liệu mặc định mà nó rất linh động, vì vậy khi chúng tôi thực hiện INSERT, chúng tôi cần thêm một mảng ([]) vào cột bookmark và like tôi đã làm ở trên. Giờ thì mảng JSON đã sẵn sàng.
+
+
 Thứ 2, tôi sẽ thử lưu trữ đánh dấu ở trường hợp sau:
 
 Hung, là ID người dùng số một (ID =1), sẽ đánh dấu bài viết có ID = 2 của Tham.
@@ -118,6 +121,7 @@ UPDATE article SET bookmark = JSON_MERGE (bookmark, "1") WHERE id = 2;
 ```
 
 Kết quả sẽ như thế này:
+
 ![S](https://i.imgur.com/QXrcU8C.png)
 
 Thông thường ở frontend chúng ta sẽ phải trả về một giá trị để xác định có đánh dấu hay không. Bằng cách truyền ID của user đó.
@@ -139,10 +143,11 @@ Cột này chứa dánh sách ids người dùng đã đánh dấu bài viết. 
 ## Xử lý thêm dữ liệu vào kiểu JSON
 
 Nếu chúng ta muốn thêm 1 ID, chỉ cần sử dụng hàm JSON_MERGE.
+
 ```UPDATE article SET bookmark = JSON_MERGE (bookmark,?) WHERE id = 2```
 
 Ví dụ tôi muốn thêm ID =1 vào. Sau câu truy vấn trên sẽ được kết quả là:
-[4, 5, 6, 7, 9, 1]
+```[4, 5, 6, 7, 9, 1]```
 
 
 Vậy là bài viết đến đây đã kết thúc. Hy vọng nó hữu ích với bạn trong nhiều trường hợp sau này!
