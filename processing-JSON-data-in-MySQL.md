@@ -149,5 +149,8 @@ Nếu chúng ta muốn thêm 1 ID, chỉ cần sử dụng hàm JSON_MERGE.
 Ví dụ tôi muốn thêm ID =1 vào. Sau câu truy vấn trên sẽ được kết quả là:
 ```[4, 5, 6, 7, 9, 1]```
 
+Có rất nhiều cuộc tranh luận giữa các nhà phát triển về hiệu suất của JSON vs Row trong MySQL, ở đây tôi sẽ không so sánh liên quan đến điều đó mà chỉ đưa ra gợi ý thêm về cách lưu trữ và phuương pháp để bạn có thể áp dụng trong các ứng dụng.
+
+Trong thực tế, chúng ta cũng cần chú ý đến hiệu suất của các ứng dụng mà chúng ta sẽ thực hiện trong tương lai mà có lựa chọn hợp . Vì vậy, các bạn cần phân tích kỹ trước khi tạo cấu trúc cơ sở dữ liệu. Sự lựa chọn JSON hay Row tôi sẽ dành thời gian để viết 1 bài viết có nội dung chuyên sâu trong 1 ngày nào đó. Hiện tại, trọng tâm bài viết này của tôi chính là chia sẻ những hiểu biết về dữ liệu JSON trong Mysql.
 
 Vậy là bài viết đến đây đã kết thúc. Hy vọng nó hữu ích với bạn trong nhiều trường hợp sau này!
