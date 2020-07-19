@@ -13,6 +13,8 @@ Tính năng mà tôi sẽ cung cấp là: Người dùng có thể đọc bài v
 Nói đến đây, chắc có lẽ bạn sẽ có ý tưởng tạo hai bảng mới, đó là bookmark và like. 
 Nhưng trong hướng dẫn này, tôi sẽ giảm số lượng bảng và sử dụng kiểu dữ liệu JSON để lưu dữ liệu. Đó cũng là mục đích chính của bài viết này.
 
+Đầu tiên, tôi sẽ tạo 1 database với 2 tables:
+
 ```
 - MySQL dump 10.13 Distrib 5.7.23, for Linux (x86_64) 
 - 
@@ -106,3 +108,30 @@ UNLOCK TABLES;
 
 - Dump completed on 2020-07-19 21:10:59
 ```
+
+Thứ 2, tôi sẽ thử lưu trữ đánh dấu ở trường hợp sau:
+
+Hung, là ID người dùng số một (ID =1), sẽ đánh dấu bài viết có ID = 2 của Tham.
+Câu SQL mà tôi sử dụng là:
+```
+UPDATE article SET bookmark = JSON_MERGE (bookmark, "1") WHERE id = 2;
+```
+
+Kết quả sẽ như thế này:
+![S](https://i.imgur.com/QXrcU8C.png)
+
+Thông thường ở frontend chúng ta sẽ phải trả về một giá trị để xác định có đánh dấu hay không. Bằng cách truyền ID của user đó.
+
+Bên backend chúng ta phải xử lý logic ở đây, chúng có thể dễ dàng kiểm tra xem id người dùng yêu cầu có nằm trong mảng bookmarks đó không. (in_array). Nếu có thì đưa ra một dấu hiệu của JSON "is_bookmark", nếu không thì trả về 0 cho giá trị JSON "is_bookmark".
+
+## Vấn đề khi xử lý xoá dữ liệu kiểu JSON
+
+Chúng ta không thể nào xử lý kiểu JSON với các câu truy vấn SQL trực tiếp. 
+Giải pháp phù hợp là sẽ xử lý JSON và Array trong mỗi ngôn ngữ được sử dụng trước khi đưa vào truy vấn SQL.
+Ví dụ: Tôi có giá trị cột bookmark loại JSON trong bảng bài viết có chứa các giá trị sau
+
+``` [1, 4, 5, 6, 7, 9] ```
+
+Cột này chứa dánh sách ids người dùng đã đánh dấu bài viết. Vì vậy, nếu người dùng có id = 1 muốn xóa dấu trang, chúng ta có thể tìm kiếm nó bằng một thư viện mảng như Lodash JS hoặc Collection Laravel có thể tìm kiếm id = 1. Nếu nó được tìm thấy tại chỉ mục 0, chúng ta có thể thực hiện hàm **JSON_REMOVE** với truy vấn sau:
+
+```UPDATE article set bookmark = JSON_REMOVE (bookmark, '$ [?]') Where id = 2 ```
