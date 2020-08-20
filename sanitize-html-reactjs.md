@@ -58,3 +58,16 @@ allowProtocolRelative: true,
 enforceHtmlBoundary: false
 ```
 
+Tất nhiên là bạn có thể hoàn toàn chỉnh sửa, bổ sung các quy tắc riêng của bạn.
+Ví bạn: Nếu bạn muốn cho phép tất cả thẻ  HTML hoặc tất cả các thuộc tính (attribute) (Tất nhiên không ai khuyến khích bạn làm điều này)
+
+```allowedTags: false,
+allowedAttributes: false
+```
+
+Hoặc, bạn không muốn bất kỳ Tags hay Attributes nào có thể hoạt động. Set allowedTags to [] and allowedAttributes to {}.
+
+```
+allowedTags: [],
+allowedAttributes: {}
+```
