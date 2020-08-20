@@ -16,3 +16,19 @@ sanitize-html cho phép bạn chỉ định các thẻ HTML bạn muốn cho ph�
 
 Một số cài đặt mặc định hiệu quả như: Các thuộc tính href được xác thực để đảm bảo chúng chỉ chứa các URL http, https, ftp và mailto. 
 
+## Cài đặt sanitize-html
+
+Việc cài đặt khá đơn giản
+
+``npm install sanitize-html``
+
+## Sử dụng sanitize-html
+
+Cách sử dụng cũng khá là đơn giản, chỉ cần require
+
+``var sanitizeHtml = require('sanitize-html');``
+
+Và gọi nói thông qua hàm sanitizeHtml
+ 
+``var dirty = 'some really tacky HTML';
+var clean = sanitizeHtml(dirty, {});``
