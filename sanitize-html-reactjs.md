@@ -71,3 +71,35 @@ Hoặc, bạn không muốn bất kỳ Tags hay Attributes nào có thể hoạt
 allowedTags: [],
 allowedAttributes: {}
 ```
+
+**Nếu bạn muốn chỉ cho phép các giá trị cụ thể trên một số thuộc tính?
+
+```javascript
+allowedAttributes: {
+  iframe: [
+    {
+      name: 'sandbox',
+      multiple: true,
+      values: ['allow-popups', 'allow-same-origin', 'allow-scripts']
+    }
+  ]
+}
+```
+
+**Bạn chỉ muốn các iframe của youtube và vimeo có thể hiển thị?
+
+
+```javascript
+clean = sanitizeHtml('<p><iframe src="https://www.youtube.net/embed/nykIhs12345"></iframe><p>', {
+  allowedTags: [ 'p', 'em', 'strong', 'iframe' ],
+  allowedClasses: {
+    'p': [ 'fancy', 'simple' ],
+  },
+  allowedAttributes: {
+    'iframe': ['src']
+  },
+  allowedIframeHostnames: ['www.youtube.com', 'player.vimeo.com']
+});
+````
+
+Trên đây là những giới thiệu sơ qua về sanitize-html và cách sử dụng cơ bản. Để có thể tìm hiểu chi tiết hơn. Bạn có thể tham khảo phần document chính thức tại: https://www.npmjs.com/package/sanitize-html
