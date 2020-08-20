@@ -18,7 +18,7 @@ Một số cài đặt mặc định hiệu quả như: Các thuộc tính href 
 
 ## Cài đặt sanitize-html
 
-Việc cài đặt khá đơn giản
+Khi bạn sử dụng Reactjs đã có sẵn môi trường Nodejs thì việc cài đặt khá đơn giản
 
 ``npm install sanitize-html``
 
@@ -32,3 +32,29 @@ Và gọi nói thông qua hàm sanitizeHtml
  
 ``var dirty = 'some really tacky HTML';
 var clean = sanitizeHtml(dirty, {});``
+
+Với dirty là nội dung HTML cần render, tham số thứ 2 có thể bỏ trống vì đó là các cài đặt allowed tags và attributes. 
+Mặc định thì ``sanitize-html`` đã hỗ trợ một option mặc định như thế này. Đủ để bạn có thể dùng
+
+``
+allowedTags: [ 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
+  'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'abbr', 'code', 'hr', 'br', 'div',
+  'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'iframe' ],
+disallowedTagsMode: 'discard',
+allowedAttributes: {
+  a: [ 'href', 'name', 'target' ],
+  // We don't currently allow img itself by default, but this
+  // would make sense if we did. You could add srcset here,
+  // and if you do the URL is checked for safety
+  img: [ 'src' ]
+},
+// Lots of these won't come up by default because we don't allow them
+selfClosing: [ 'img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta' ],
+// URL schemes we permit
+allowedSchemes: [ 'http', 'https', 'ftp', 'mailto' ],
+allowedSchemesByTag: {},
+allowedSchemesAppliedToAttributes: [ 'href', 'src', 'cite' ],
+allowProtocolRelative: true,
+enforceHtmlBoundary: false
+``
+
