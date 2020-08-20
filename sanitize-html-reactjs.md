@@ -36,7 +36,7 @@ var clean = sanitizeHtml(dirty, {});``
 Với dirty là nội dung HTML cần render, tham số thứ 2 có thể bỏ trống vì đó là các cài đặt allowed tags và attributes. 
 Mặc định thì ``sanitize-html`` đã hỗ trợ một option mặc định như thế này. Đủ để bạn có thể dùng
 
-``
+```javascript
 allowedTags: [ 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
   'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'abbr', 'code', 'hr', 'br', 'div',
   'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'iframe' ],
@@ -56,5 +56,5 @@ allowedSchemesByTag: {},
 allowedSchemesAppliedToAttributes: [ 'href', 'src', 'cite' ],
 allowProtocolRelative: true,
 enforceHtmlBoundary: false
-``
+```
 
