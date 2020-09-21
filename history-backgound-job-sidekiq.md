@@ -47,3 +47,33 @@ class AsyncJobLog < ApplicationRecord
   }
 end
 ```
+
+## 3 - Tạo module phục vụ lưu Log
+
+Module này sẽ chịu trách nhiệm cho hầu hết các công việc tạo và cập nhật lịch sử Job
+```
+module WithJobLogging
+  def log_retryable_job(jid, job_type, user_id = nil)
+    create_async_job_log(jid, job_type, user_id) unless async_job_log(jid)
+    yield
+    mark_job_as_finished(jid)
+  end
+  
+  def create_async_job_log(jid, job_type, user_id = nil)
+    AsyncJobLog.create(
+      jid: jid,
+      state: 'started',
+      job_type: job_type,
+      user_id: user_id
+    )
+  end
+
+  def async_job_log(jid)
+    AsyncJobLog.find_by(jid: jid)
+  end
+
+  def mark_job_as_finished(jid)
+    async_job_log(jid).finished!
+  end
+end
+```
