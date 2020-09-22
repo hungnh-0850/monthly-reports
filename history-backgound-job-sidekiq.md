@@ -113,6 +113,8 @@ end
 
 ## 4 - Mở rộng
 
+Chúng ta có thể mở rộng Worker này. Check nếu có tiến trình đang xử lý với User mà chưa hoàn thành thì chúng ta sẽ dừng lại.
+Nếu tất cả Job trước đó đã hoàn thành sẽ tiếp tục xử lý để lưu lịch sử ch
 ```
 require 'sidekiq'
 
