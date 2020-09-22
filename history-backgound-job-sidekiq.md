@@ -45,6 +45,7 @@ class AsyncJobLog < ApplicationRecord
     user_verification:       1,
     financial_data_import:   2,
   }
+  scope :financial_jobs, -> { where(job_type: %w[financial_data_import]) }
 end
 ```
 
@@ -57,6 +58,17 @@ module WithJobLogging
     create_async_job_log(jid, job_type, user_id) unless async_job_log(jid)
     yield
     mark_job_as_finished(jid)
+  end
+  
+  def log_nonretryable_job(jid, job_type, user_id = nil)
+    begin
+      create_async_job_log(jid, job_type, user_id) unless async_job_log(jid)
+      yield
+    rescue
+      # if needed
+    ensure
+      mark_job_as_finished(jid)
+    end
   end
   
   def create_async_job_log(jid, job_type, user_id = nil)
@@ -76,4 +88,58 @@ module WithJobLogging
     async_job_log(jid).finished!
   end
 end
+```
+Sử dụng mô-đun này trong worker thực tế:
+
+```
+require 'sidekiq'
+
+class UserVerificationWorker
+  include Sidekiq::Worker
+  include WithJobLogging
+  sidekiq_options retry: false
+
+  def perform(user_id)
+    log_nonretryable_job(jid, 'user_verification', user_id) { do_stuff }
+  end
+  
+  private
+
+  def do_stuff
+    # logic
+  end
+end
+```
+
+## 4 - Mở rộng
+
+```
+require 'sidekiq'
+
+class FinancialDataImportWorker
+  include Sidekiq::Worker
+  include WithJobLogging
+  sidekiq_options retry: 5
+  
+  sidekiq_retries_exhausted do |msg|
+    async_job_log = AsyncJobLog.find_by(jid: msg['jid'])
+    async_job_log.finished!
+  end
+
+  def perform(user_id)
+    user = User.find(user_id)
+    return if financial_job_in_progress?(user)
+
+    log_retryable_job(jid, 'financial_data_import', user_id) { do_stuff }
+  end
+  
+  private
+
+  def financial_job_in_progress?(user)
+    user.async_job_logs.financial_jobs.started.where.not(jid: jid).any?
+  end  
+  
+  def do_stuff
+    # logic
+  end
 ```
