@@ -11,13 +11,13 @@ Và đây đúng là vấn đề mà mình đã phải suy nghĩ và cân nhắc
 
 Bài viết này sẽ giới thiệu cho các bạn một số cách mà mình đã sử dụng.
 
-# Lưu trực tiếp vào database
+## Lưu trực tiếp vào database
 
 Đây là cách thông thường nhất mà mình đã nghĩ tới, lưu đơn giản và sau này cần lấy ra cũng thật là đơn giản, chỉ cần sử dụng các câu truy vấn, rồi muốn làm gì thì làm.
 Nhưng như mình đã nói từ đầu, việc lưu trữ của mình chỉ cần trong 1 khoảng thời gian nhất định mà thôi, không phải lưu vĩnh viến, nếu lưu hết vào database thì thật sự rất rác. Vả lại mỗi lần lưu ID của chúng tự động tăng lên, dữ liệu lưu các nhiều, truy vấn sau này càng chậm.
 Tất nhiên mình có thể viết 1 task riêng hoặc sử dụng CronJob để chạy lịch xoá chúng tự động sau một khoảng thời gian. Nhưng cái việc ID ngày càng tăng lên luôn khiến mình cảm thấy khó chịu và không dùng tới cách này.
 
-# Lưu phía browser (LocalStorage, vv.vv)
+## Lưu phía browser (LocalStorage, vv.vv)
 
 Đây cũng là 1 vấn đề khi mình muốn lưu lại lịch sử làm bài trắc nghiệm của người dùng, mình muốn lưu lại lịch sử mỗi khi họ chọn đáp án để khi lỡ may F5 hay mất mạng thì không phải chọn lại từ đầu.
 
@@ -26,6 +26,38 @@ Tuy nhiên, lại có vấn đề xảy ra ở đây là mình không thể qu�
 
 Nhưng sau tất cả, mình đã chọn ra được một giải phát tốt nhất. Đó là.....
 
-# Sử dụng Redis
+## Sử dụng Redis
 
 "Redis là một hệ thống hỗ trợ lưu trữ dữ liệu và được lưu trữ trên ram để truy suất một cách nhanh chóng, nó hỗ trợ việc truy suất dữ liệu và một cách nhanh chóng. Và hiện nay, redis đã được dùng khá phổ biến cho lưu dữ liệu, Caching, Publish/Suscribe (Pub/Sub), Queues chạy Job "
+
+![alt](https://topdev.vn/blog/wp-content/uploads/2019/05/redis-la-gi.png)
+
+
+Nếu sử dụng Rails, các bạn hãy cài thêm 2 gem này để làm việc và quản lý Redis một cách dễ dàng hơn
+```
+gem "redis-namespace"
+gem "redis-rails"
+```
+
+Cách set và get trong redis cũng rất là đơn giản.
+(Lưu ý: Bạn cần to_json trước khi lưu vào Redis)
+```$redis.set "posts", Post.all.to_json```
+
+Và khi cần lấy dữ liệu ra.
+
+```
+posts = $redis.get "posts"
+posts = JSON.load posts
+```
+Để xoá
+```$redis.del "posts" ```
+
+Và tất nhiên, còn 1 điểm mạnh nữa để mình lựa chọn sử dụng Redis đó là nó sẽ tự động clear data sau 6 tháng.
+Nếu bạn muốn xoá nó vào thời gian cụ thể nào đó, bạn có thể sử dụng
+
+```$redis.expire 2.days```
+
+Đây cũng là mô hình mà nhiều người sử dụng Redis để caching, tăng tốc độ cho ứng dụng.
+
+![alt](https://www.cloudmanagementinsider.com/wp-content/uploads/2019/08/Did-you-know_-Redis-Fact-1.png)
+
