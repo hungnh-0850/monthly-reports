@@ -1,4 +1,4 @@
-#Học Typescript: Những kiểu dữ liệu cơ bản cần nắm (P1)
+# Học Typescript: Những kiểu dữ liệu cơ bản cần nắm (P1)
 
 Typescript đã dần trở nên rất phổ biến bởi những lợi thế mà nó mang lại như: Các viết code nhanh, chặt chẽ, khai báo tường mình. Rất nhiều dự án, FW JS hiện nay đều hỗ trợ và dần chuyển sang sử dụng Typescript
 
@@ -19,7 +19,7 @@ Bên cạnh đó thì bổ sung nhiều kiểu dữ liệu hiện đại hơn m�
 
 Cách khai báo kiểu dữ liệu cho biến. Ngăn cách tên biến và kiểu dữ liệu bằng dấu **:**
 
-**VD: **
+**VD:**
 ```
 let first: string; // first có kiểu dữ liệu string
 first = 'Anders';
@@ -106,7 +106,7 @@ console.log(coordinates); // prints [[3, 5], [7]]
     
 **Một mảng đa chiều có thể được khởi tạo dưới dạng một mảng trống mà không tạo ra bất kỳ lỗi nào.    **
     
-### 3. Kiểu Tuple###     
+### 3. Kiểu Tuple ###     
     
 Nó tương tự như mảng. Dùng để  bạn khai báo mảng với các giá trị có kiểu dữ liệu mà bạn đã biết cho từng phần tử trong mảng.
 
