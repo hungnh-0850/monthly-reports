@@ -82,3 +82,20 @@ Bộ đệm dữ liệu là một vùng lưu trữ bộ nhớ vật lý được
 
 Bộ đệm có kích thước xác định và giới hạn. Kích thước của bộ đệm được xác định bởi một thuật toán theo từng trường hợp. Bộ đệm là một kỹ thuật được phát triển để ngăn chặn sự tắc nghẽn dữ liệu khi di chuyển từ nơi này đến nơi khác.
 ```
+
+## Làm việc với Buffer trong Nodejs
+
+![image](https://user-images.githubusercontent.com/47617168/130002717-5c221559-cfbc-4d0a-8491-6748c17fe6f1.png)
+Khi nội dung vào buf1 đã khởi tạo trước đó
+![image](https://user-images.githubusercontent.com/47617168/130003004-a30b0c8e-7df8-48c4-963a-44285bab8267.png)
+
+Chuyển đổi nó thành chuỗi bằng cách sử dụng hàm toString () với mã hóa mặc định utf8
+
+Ngoài ra chúng ta cũng có thể tạo buffer với content có sẵn từ đầu
+![image](https://user-images.githubusercontent.com/47617168/130003154-4b4b5d09-ef4f-4d4c-8279-f5fa7e80d216.png)
+
+Có rất nhiều hàm dùng để thao tác với Buffer mà các bạn có thể tham khảo trực tiếp ở trang chủ của Nodejs
+https://nodejs.org/dist/latest-v8.x/docs/api/buffer.html
+
+Bài viết này chỉ tập trung làm rõ để bạn hiểu về Buffer và Stream nên xin phép kết thúc tại dây.!
+
