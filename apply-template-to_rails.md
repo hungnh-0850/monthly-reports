@@ -19,25 +19,25 @@ template_shop/img/logo.png
 template_shop/fonts/MaterialIcons-Regular.ttf
 ```
 
-Mình sẽ ném nguyên folder template_shop vào folder public của rails. Sau đó mình chỉ cần nhúng css, js vào header của rails app thông qua file application.erb.html như sau
+Mình sẽ ném nguyên folder template_shop vào folder public của rails. Sau đó mình chỉ cần nhúng css, js vào header của rails app thông qua file `application.html.erb` như sau
 
 ```
 <link rel="stylesheet" media="all" href="/template_shop/css/main.css" />
 <script src="/template_shop/css/main.js"></script>
 ```
 
-Khi đó các file css nếu có có gọi file images, fonts thì sẽ gọi ở dạng đường dẫn tương đối. Nếu đã đặt đúng cấu trúc như trên ở folder public thì sẽ tự động được loading đúng.
+Khi đó các file css nếu có có gọi file images, fonts thì sẽ gọi ở dạng đường dẫn tương đối. Nếu đã đặt đúng cấu trúc như trên ở folder public thì sẽ tự động được load đúng.
 
 Cách này nhanh tuy nhiên có một nhược điểm về cấu trúc dự án và có thể bị cache css, js.
-Đầu tiên về cấu trúc, là không nên đặt bất cứ thứ gì vào folder public. Đây là folder mà sau khi Rails đã complie css, js, images..vv từ app/assets , app/vender hay các folder,file khác được define ở **config/initializers/assets.rb** sẽ được rails move vào đây. Cũng như thay thế các link trỏ đến chúng thông qua các helper url, kèm theo version sau mỗi lần compile. 
-Mục đích thứ 2 là không để bị cache css, js sau mỗi lần có thay đổi code.
+
+Đầu tiên về cấu trúc, là không nên đặt bất cứ thứ gì vào folder public. Đây là folder mà sau khi Rails đã complie css, js, images..vv từ `app/assets` , `app/vender` hay các folder,file khác được define ở **config/initializers/assets.rb** sẽ được rails move vào đây. Cũng như thay thế các link trỏ đến chúng thông qua các helper url, kèm theo version sau mỗi lần compile. Mục đích thứ 2 là không để bị cache css, js sau mỗi lần có thay đổi code.
 
 Do đó, chúng ta sẽ cần tới cách 2
 
 ## Cách 2: Tổ chức code để complie
 
 Đây là cách hoàn hảo và hợp lý nhất để áp dụng 1 template đã được design, có sẵn css, js trước đó. Code sẽ được tổ chức theo rails
-Với folder như trên. Chúng ta sẽ move js đến folder app/assets/stylesheets 
+Với folder như trên. Chúng ta sẽ move js đến folder `app/assets/stylesheets` 
 Ở đây mình sẽ tạo folder có tên new_template. Move 2 file main.js và dashboard.js vào.
 
 Để được cây thư mục như sau
@@ -60,16 +60,18 @@ Và thêm
  *= require new_tempalte
 ```
 
-Lúc này các file css, js ở trên sẽ được complie, sau đó được move qua public. Rails cũng sẽ tự động load đúng URL chèn vào header nhờ 2 thẻ này ở application.html.erb
+Lúc này các file css, js ở trên sẽ được complie, sau đó được move qua public. 
+Rails cũng sẽ tự động load đúng URL chèn vào header nhờ 2 thẻ này ở `application.html.erb`
 
 ```
 <%= stylesheet_link_tag "application", media: "all" %>
 <%= javascript_include_tag "application" %>
 ```
 
-Tuy nhiên, nó vẫn chưa thể nào hoạt động trơn tru bởi nếu các file css có gọi đến các file fonts thì rails sẽ không load được chúng. Do đó chũng ta cũng sẽ cần phải sửa ở chỗ này. Cho phép rails complie cũng như quản lý fonts bằng cách sau đây
+Tuy nhiên, nó vẫn chưa thể nào hoạt động trơn tru bởi nếu các file css có gọi đến các file fonts thì rails sẽ không load được chúng. 
+Do đó chũng ta cũng sẽ cần phải sửa ở chỗ này. Cho phép rails complie cũng như quản lý fonts bằng cách sau đây
 
-Tạo thêm folder fonts vào app/assets/fonts . Move hết các file font qua đây. Sau đó mở file ` config/initializers/assets.rb` thêm dòng `Rails.application.config.assets.paths << Rails.root.join("app", "assets", "fonts")`
+Tạo thêm folder fonts vào `app/assets/fonts` . Move hết các file font qua đây. Sau đó mở file ` config/initializers/assets.rb` thêm dòng `Rails.application.config.assets.paths << Rails.root.join("app", "assets", "fonts")`
 
 Tiếp đến mở các file css, sass sửa phần url của fonts thành như sau
 
@@ -79,6 +81,8 @@ Tiếp đến mở các file css, sass sửa phần url của fonts thành như 
   src: url(font-path('MaterialIcons-Regular.ttf'));
 }
 ```
+![image](https://user-images.githubusercontent.com/47617168/134118408-118600b5-f27a-4427-9171-b2199637065e.png)
+
 
 Như vậy là xem như đã hoàn chỉnh việc apply 1 template vào ứng dụng rails.
 Bài viết này cũng giúp bạn biết cách config để complie thêm các resource cần thiết trong ứng dụng rails.
